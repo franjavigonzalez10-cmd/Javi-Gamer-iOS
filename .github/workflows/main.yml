@@ -14,6 +14,7 @@ jobs:
       - name: Preparar proyecto
         run: |
           unzip -q 3105_license_work_fileport_fixed.zip -d source
+          sed -i '' 's|#import <sys/fileport.h>|#import "fileport_compat.h"|' source/ThreeOneOSFive/kexploit/kexploit_opa334.m
           PROJECT=$(find source -name "ThreeOneOSFive.xcodeproj" -type d | head -1)
           echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
           echo "Proyecto encontrado: $PROJECT"
