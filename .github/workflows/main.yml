@@ -11,22 +11,40 @@ jobs:
       - name: Descargar proyecto
         uses: actions/checkout@v4
 
+      - name: Preparar proyecto
+        run: |
+          unzip -q 3105_license_work_v6.zip -d source
+          PROJECT=$(find source -name "ThreeOneOSFive.xcodeproj" -type d | head -1)
+          echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
+          echo "Proyecto encontrado: $PROJECT"
+
       - name: Comprobar Xcode
-        run: xcodebuild -version
+        run: |
+          xcodebuild -version
+          xcode-select -p
 
       - name: Compilar proyecto iOS
         run: |
-          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme 3105 -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -archivePath build/3105.xcarchive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive
+          xcodebuild \
+            -project "$PROJECT" \
+            -scheme 3105 \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/3105.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            archive
 
       - name: Crear IPA sin firma
         run: |
           mkdir -p build/Payload
           cp -R build/3105.xcarchive/Products/Applications/3105.app build/Payload/
           cd build
-          zip -r Javi-Gamer-GBox.ipa Payload
+          zip -r Javi-Gamer-IPA.ipa Payload
 
       - name: Entregar IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Javi-Gamer-GBox-IPA
-          path: build/Javi-Gamer-GBox.ipa
+          name: Javi-Gamer-IPA
+          path: build/Javi-Gamer-IPA.ipa
