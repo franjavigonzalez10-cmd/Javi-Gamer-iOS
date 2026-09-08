@@ -11,6 +11,13 @@ jobs:
       - name: Descargar proyecto
         uses: actions/checkout@v4
 
+      - name: Preparar proyecto
+        run: |
+          unzip -q 3105_license_work_v6.zip -d source
+          PROJECT=$(find source -name "ThreeOneOSFive.xcodeproj" -type d | head -1)
+          echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
+          echo "Proyecto encontrado: $PROJECT"
+
       - name: Comprobar Xcode
         run: |
           xcodebuild -version
@@ -19,7 +26,7 @@ jobs:
       - name: Compilar proyecto iOS
         run: |
           xcodebuild \
-            -project ThreeOneOSFive.xcodeproj \
+            -project "$PROJECT" \
             -scheme 3105 \
             -configuration Release \
             -sdk iphoneos \
