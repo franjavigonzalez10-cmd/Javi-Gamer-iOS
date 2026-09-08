@@ -13,7 +13,7 @@ jobs:
 
       - name: Preparar proyecto
         run: |
-          unzip -q 3105_license_work_v6.zip -d source
+          unzip -q 3105_license_work_fileport_fixed.zip -d source
           PROJECT=$(find source -name "ThreeOneOSFive.xcodeproj" -type d | head -1)
           echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
           echo "Proyecto encontrado: $PROJECT"
