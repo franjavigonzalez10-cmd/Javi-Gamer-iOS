@@ -11,23 +11,12 @@ jobs:
       - name: Descargar proyecto
         uses: actions/checkout@v4
 
-- name: Comprobar Xcode
-  run: |
-    xcodebuild -version
-    xcode-select -p
+      - name: Comprobar Xcode
+        run: xcodebuild -version
 
       - name: Compilar proyecto iOS
         run: |
-          xcodebuild \
-            -project ThreeOneOSFive.xcodeproj \
-            -scheme 3105 \
-            -configuration Release \
-            -sdk iphoneos \
-            -destination 'generic/platform=iOS' \
-            -archivePath build/3105.xcarchive \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            archive
+          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme 3105 -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -archivePath build/3105.xcarchive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive
 
       - name: Crear IPA sin firma
         run: |
@@ -41,4 +30,3 @@ jobs:
         with:
           name: Javi-Gamer-GBox-IPA
           path: build/Javi-Gamer-GBox.ipa
-          
